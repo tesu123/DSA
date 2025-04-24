@@ -1,48 +1,47 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
 
-class Node
-{
-public:
+typedef struct Node {
     int data;
-    Node *next;
-    Node(int val)
-    {
-        data = val;
-        next = NULL;
+    struct Node* next;
+} Node;
+
+Node* createNode(int val) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
     }
-};
+    newNode->data = val;
+    newNode->next = NULL;
+    return newNode;
+}
 
-int main()
-{
-    // Node *head = new Node(1);
-    //  head->next = new Node(2);
-    //  head->next->next = new Node(3);
-    //  head->next->next->next = new Node(4);
-
-    Node *head = new Node(1); // Create the first node
-                              // cout << head->data << endl; // Output: 1
-    Node *newNode = new Node(2);
-    head->next = newNode; // Link the first node to the second node
-
-    Node *newNode2 = new Node(3);
-    newNode->next = newNode2; // Link the second node to the third node
+int main() {
+    // Create the first node
+    Node* head = createNode(1);
+    
+    // Create and link the second node
+    Node* newNode = createNode(2);
+    head->next = newNode;
+    
+    // Create and link the third node
+    Node* newNode2 = createNode(3);
+    newNode->next = newNode2;
 
     // Print the linked list
-    Node *temp = head;
-    while (temp != NULL)
-    {
-        cout << temp->data << " ";
+    Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
         temp = temp->next;
     }
-    cout << endl;
+    printf("\n");
 
     // Free the allocated memory
     temp = head;
-    while (temp != NULL)
-    {
-        Node *nextNode = temp->next;
-        delete temp;
+    while (temp != NULL) {
+        Node* nextNode = temp->next;
+        free(temp);
         temp = nextNode;
     }
 
