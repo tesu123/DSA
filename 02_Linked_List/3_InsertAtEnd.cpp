@@ -1,54 +1,62 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
 
-class Node
-{
-public:
+typedef struct Node {
     int data;
-    Node *next;
-    Node(int val)
-    {
-        data = val;
-        next = NULL;
-    }
-};
+    struct Node* next;
+} Node;
 
-void insertAtEnd(Node *&head, int val)
-{
-    Node *newNode = new Node(val); // Create a new node with the given value
-    if (head == NULL)               // If the list is empty, make the new node the head
-    {
-        head = newNode;
-        return;
+Node* createNode(int val) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
     }
-    Node *temp = head; // Start from the head
-    while (temp->next != NULL) // Traverse to the end of the list
-    {
-        temp = temp->next;
-    }
-    temp->next = newNode; // Link the last node to the new node
+    newNode->data = val;
+    newNode->next = NULL;
+    return newNode;
 }
 
-int main()
-{
-    Node *head = new Node(1);
-    Node *newNode = new Node(2);
-    Node *newNode2 = new Node(3);
+void insertAtEnd(Node** head, int val) {
+    Node* newNode = createNode(val);  // Create a new node with the given value
+    if (*head == NULL) {              // If the list is empty, make the new node the head
+        *head = newNode;
+        return;
+    }
+    Node* temp = *head;              // Start from the head
+    while (temp->next != NULL) {     // Traverse to the end of the list
+        temp = temp->next;
+    }
+    temp->next = newNode;            // Link the last node to the new node
+}
+
+int main() {
+    // Create the initial linked list: 1->2->3
+    Node* head = createNode(1);
+    Node* newNode = createNode(2);
+    Node* newNode2 = createNode(3);
 
     head->next = newNode;
     newNode->next = newNode2;
 
-    // Insert a new node at the start of the linked list
-    insertAtEnd(head, 5); // Insert 0 at the start
+    // Insert a new node at the end of the linked list
+    insertAtEnd(&head, 5);  // Insert 5 at the end
 
-    // Print the linked list
-    Node *temp = head;
-    while (temp != NULL)
-    {
-        cout << temp->data << " ";
+    // Print the linked list (now: 1->2->3->5)
+    Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
         temp = temp->next;
     }
-    cout << endl;
+    printf("\n");
+
+    // Free the allocated memory
+    temp = head;
+    while (temp != NULL) {
+        Node* nextNode = temp->next;
+        free(temp);
+        temp = nextNode;
+    }
 
     return 0;
 }
